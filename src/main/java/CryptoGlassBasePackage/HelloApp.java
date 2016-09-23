@@ -1,11 +1,16 @@
 package CryptoGlassBasePackage;
 
+import java.util.Scanner;
+
 public class HelloApp {
 
     public static void main(String[] args) {
-        String message="A124safsASAs546540";
+        Scanner scanner = new Scanner(System.in);
+        String message = scanner.nextLine();
         CryptFunctions cryptFunctions = new CryptFunctions();
         System.out.println();
-        System.out.println("Şifrelenmiş Mesaj:"+cryptFunctions.crypt(message));
+        String cryptedMessage = cryptFunctions.crypt(message);
+        System.out.println("Şifrelenmiş Mesaj:" + cryptedMessage);
+        System.out.println("Çözümlenmiş Mesaj" + cryptFunctions.deCrypt(cryptedMessage));
     }
 }
