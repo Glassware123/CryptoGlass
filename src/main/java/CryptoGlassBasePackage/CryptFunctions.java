@@ -1,13 +1,20 @@
 package CryptoGlassBasePackage;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 public class CryptFunctions {
 
+    public Double calculateFactorial(Integer n) {
+        double result = 1;
+        for (int i = 1; i <= n; i++) {
+            result = result * i;
+        }
+        return result;
+    }
     public int dividingHourFromClosestPrimeNumber(Integer hour){
-        String convertHour;
         Integer closestPrimeNumber,minDifference,result;
         List<Integer> primeNumbers = new ArrayList<Integer>();
         primeNumbers.add(2);
@@ -31,10 +38,13 @@ public class CryptFunctions {
             }
         }
         result=hour%closestPrimeNumber;
-        return result;
+        return closestPrimeNumber;
 
     }
     public String crypt(String message){
+        BigDecimal bd;
+        Double doubleVal;
+        String stringVal;
         ArrayList<Integer> cryptedMessage = new ArrayList<Integer>();
         Calendar calendar=Calendar.getInstance();
         Integer asciiCode;
@@ -43,7 +53,9 @@ public class CryptFunctions {
         System.out.println("Şifrenecek mesaj:"+message);
         for (int i =0 ; i< charArray.length ;i++){
             asciiCode=(int)charArray[i];
-            cryptedMessage.add(asciiCode + dividingHourFromClosestPrimeNumber(hour));
+            doubleVal = calculateFactorial(hour + 3) / calculateFactorial(dividingHourFromClosestPrimeNumber(hour));
+            bd = new BigDecimal(doubleVal);
+            cryptedMessage.add((int) (Math.pow(asciiCode, 2) + bd.intValue()));
         }
         return cryptedMessage.toString() + "x" + hour;
     }
@@ -56,7 +68,7 @@ public class CryptFunctions {
         String[] decryptedMessage = new String[codeParts.length];
         for (int i = 0; i < codeParts.length; i++) {
             codeArray.add(Integer.valueOf(codeParts[i].trim()));
-            decryptedMessage[i] = String.valueOf(Character.toChars(codeArray.get(i) - dividingHourFromClosestPrimeNumber(hour)));
+            decryptedMessage[i] = String.valueOf(Character.toChars((int) Math.sqrt(codeArray.get(i) - (calculateFactorial(hour + 3) / calculateFactorial(dividingHourFromClosestPrimeNumber(hour))))));
         }
         StringBuilder builder = new StringBuilder();
         for (String s : decryptedMessage) {
@@ -64,4 +76,15 @@ public class CryptFunctions {
         }
         return builder.toString();
     }
+//    public String coreCode(String codeString){
+//        String[] parts = codeString.split("x");
+//        Integer hour = Integer.parseInt(parts[1]);
+//        String code = parts[0].substring(1, parts[0].length() - 1);
+//        ArrayList<Integer> codeArray = new ArrayList<Integer>();
+//        String[] codeParts = code.split(",");
+//        StringBuilder builder = new StringBuilder();
+//        for (String s : codeParts) {
+//            builder.append(s.trim());
+//        }
+//        return builder.toString()+"x"+hour;    }
 }
